@@ -99,6 +99,7 @@ int main(int argc, char *argv[])
         }
         else 
         {
+
             sprintf(cadena, "%s%s - %d> Crea fill %ld [%d] %s\n", color_blue, nomPrograma, getpid(), i + 1, pid, color_end);
             write(1, cadena, strlen(cadena));
         }
