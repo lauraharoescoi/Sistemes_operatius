@@ -1,17 +1,14 @@
-/* ----------------------------------------------------------------------- 
-PRA1: Suma seqüència d’enters Codi 
-font: calculador_v2.c 
-Laura Haro Escoi   
-Jonàs Salat Torres 
----------------------------------------------------------------------- */
-
+/* -----------------------------------------------------------------------
+ PRA1: Suma seqüència d’enters
+ Codi font: calculador_v2.c
+ Laura Haro Escoi
+ Jonàs Salat Torres
+ ---------------------------------------------------------------------- */
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-
 #include <unistd.h>
 #include <string.h>
 
@@ -20,17 +17,15 @@ Jonàs Salat Torres
 char *color_green = "\033[01;32m";
 char *color_end = "\033[00m";
 
-int main(int argc, char *argv[])
-{
+int sumesWriter = 20;
+
+int main(int argc, char *argv[]) {
     long int i;
     long long sum = 0, sumForm, terme_i, terme_i_mes_1, terme_1, terme_n;
     char *nomPrograma;
     char cadena[STRLONG];
 
-    close(21);
-
-    if (argc != 3)
-    {
+    if (argc != 3) {
         printf("Us: %s <1r terme> <darrer terme>\n\n", argv[0]);
         exit(1);
     }
@@ -46,8 +41,7 @@ int main(int argc, char *argv[])
     terme_i_mes_1 = terme_i + 1;
     sum = terme_i;
 
-    for (i = terme_1; i < terme_n; i++)
-    {
+    for (i = terme_1; i < terme_n; i++) {
         sum = sum + terme_i_mes_1;
         terme_i = terme_i_mes_1;
         terme_i_mes_1 = terme_i_mes_1 + 1;
@@ -58,7 +52,11 @@ int main(int argc, char *argv[])
     sprintf(cadena, "%s%s - %d> Suma amb bucle=%.0lld - Suma amb formula=%.0lld%s\n", color_green, nomPrograma, getpid(), sum, sumForm, color_end);
     write(1, cadena, strlen(cadena));
 
-    write(20, &sum, sizeof(long long));
-
+    if (write(sumesWriter, &sum, sizeof(long long)) < 0) {      //Enviem al pare el càlcul parcial i comprovem que no hi hagi cap error
+        perror("Error");
+        exit(-1);
+    }
+    
+    close(sumesWriter);
     return EXIT_SUCCESS;
 }
