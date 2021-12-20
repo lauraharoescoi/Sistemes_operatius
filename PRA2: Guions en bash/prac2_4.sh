@@ -35,4 +35,4 @@ else
     		shift
 	done
 fi
-exit 1
+exit 0
