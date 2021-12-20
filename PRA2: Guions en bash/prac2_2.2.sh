@@ -1,3 +1,10 @@
+# ------------------------------
+# PRA2: Guions en bash
+# Codi font: prac2_2.2.sh
+# Laura Haro Escoi
+# Jonàs Salat Torres
+# ------------------------------
+
 #!/bin/bash  
 
 if test $# -ne 2 

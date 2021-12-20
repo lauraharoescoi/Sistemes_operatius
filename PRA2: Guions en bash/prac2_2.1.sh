@@ -1,3 +1,10 @@
+# ------------------------------
+# PRA2: Guions en bash
+# Codi font: prac2_2.1.sh
+# Laura Haro Escoi
+# Jonàs Salat Torres
+# ------------------------------
+
 #!/bin/bash  
 
 if test $# -ne 2 # treiem els parentesis, afegim test al principi de la condició i canviem el 2 per un 3

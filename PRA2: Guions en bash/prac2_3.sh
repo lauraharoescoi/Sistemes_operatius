@@ -1,66 +1,49 @@
+# ------------------------------
+# PRA2: Guions en bash
+# Codi font: prac2_3.sh
+# Laura Haro Escoi
+# Jonàs Salat Torres
+# ------------------------------
+
 #!/bin/bash
 
-if [$# -lt 2]
-then
-    echo "Ús: $0 <nombre1> <nombre2> [... <nombreN>]"
-    exit 1
-fi
- 
-echo "M E N U "
-echo "------- "
-echo "X: maXim "
-echo "N: miNim "
-echo "P: Primers "
-echo "Tria una opció: "
-
-read var
-
-case $var in
-    X)
-
-    ;;
-    N)
-
-    ;;
-    P)
-
-    ;;
-    *)
-    echo "Opció '$var' no vàlida"
-    exit 1
-    ;;
-esac
+#funcions
 
 Maxim() {
-    maxim=0
-    while [$# -ne 0]
+    max=$1
+    while [ $# -ne 0 ]
     do
-        if ["$1" -ge "$maxim"]
+        if [ "$1" -ge "$max" ]
         then
-            maxim=$1
+            max=$1
         fi
         shift
     done
-    return $maxim
+    return $max
 }
 
 Minim() {
-    minim=$1
-    while [$# -ne 0]
+    min=$1
+    while [ $# -ne 0 ] 
     do
-        if ["$1" -le "$minim"]
+        if [ "$1" -le "$min" ]
         then
-            minim=$1
+            min=$1
         fi
         shift
     done
-    return $minim
+    return $min
 }
 
 CheckPrimary() {
-    for ((i=2; i<=$1/2; i++))
+    if [ $1 -le 1 ]
+    then
+        return 1
+    fi
+
+    for (( i=2; i<=$1/2; i++ ))
     do 
-        if [$(($1%i)) -ne 0]
+        if [ $(($1 % i)) -eq 0 ]
         then
             return 1
         fi
@@ -68,16 +51,56 @@ CheckPrimary() {
     return 0
 }
 
-Primer() {
-    primers=""
-    while [$# -ne 0]
+Primers() {
+    while [ $# -ne 0 ]
     do
-        if [CheckPrimary -ne 1]
+        CheckPrimary $1
+        if [ $? -ne 1 ]
         then
-            primers=$primers + "$1"
+            primers="${primers} $1"
         fi
         shift
     done
-    return $primers    
+    echo "$primers"    
 }
+
+#main
+
+if [ $# -lt 2 ]
+then
+    echo "Ús: $0 <nombre1> <nombre2> [... <nombreN>]"
+    exit 1
+fi
+ 
+echo "M E N U "
+echo "------- 
+"
+echo "X: maXim "
+echo "N: miNim "
+echo "P: Primers 
+"
+echo "Tria una opció: "
+
+read var
+
+case $var in
+    X|x)
+        Maxim $@
+        echo "Maxim de [$@] : $?"
+        exit 0
+    ;;
+    N|n)
+        Minim $@
+        echo "Minim de [$@] : $?"
+        exit 0
+    ;;
+    P|p)
+        echo "Nombres primers de [$@]: $(Primers $@)"
+        exit 0
+    ;;
+    *)
+    echo "Opció '$var' no vàlida"
+    exit 1
+    ;;
+esac
 
